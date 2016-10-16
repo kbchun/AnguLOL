@@ -14,3 +14,22 @@
 .stat-title {
   font-weight: bold;
 }
+
+.champ-name {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.main-title, .title, .stat-title {
+  font-weight: bold;
+}
+
+.main-title {
+  font-size: 20px;
+  text-decoration: underline;
+}
+
+.title {
+  font-size: 18px;
+  margin-top: 10px;
+}

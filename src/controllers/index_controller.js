@@ -37,15 +37,20 @@ indexApp.controller('index.controller', function($scope, PlayerInfo) {
       var stats = results[game].stats;
       var utcSeconds = results[game].createDate;
       var d = new Date(utcSeconds);
+      var roles = ['', 'Duo', 'Support', 'Carry', 'Solo'][stats.playerRole] || '';
+      var position = ['', 'Top', 'Middle', 'Jungle', 'Bot'][stats.playerPosition] || '';
+      var lane = roles + ' ' + position;
+      lane = lane === ' ' ? '' : '(' + lane.trim() + ')';
+      console.log(lane);
+      var gameType = results[game].subType.replace(/_/g, ' ').toLowerCase().replace(/\b[a-z]/g, function(letter) { return letter.toUpperCase(); });
       data.push({
         'champion': champion,
-        'gameMode': results[game].gameMode,
+        'gameType': gameType,
         'win': stats.win ? 'Win' : 'Loss',
         'totalDamageDealtToChampions': stats.totalDamageDealtToChampions || 0,
         'totalDamageTaken': stats.totalDamageTaken || 0,
         'wardsPlaced': stats.wardPlaced || 0,
         'wardsKilled': stats.wardKilled || 0,
-        'playerRole': stats.playerRole,
         'assists': stats.assists || 0,
         'deaths': stats.numDeaths || 0,
         'largestMultiKill': stats.largestMultiKill || 0,
@@ -54,6 +59,7 @@ indexApp.controller('index.controller', function($scope, PlayerInfo) {
         'timePlayed': (stats.timePlayed / 60).toFixed(2),
         'ipEarned': results[game].ipEarned,
         'date': d.toLocaleString(),
+        'lane': lane,
         'champImg': champImg
       });
     }
@@ -66,65 +72,71 @@ indexApp.directive('gameSingleInfo', function() {
     template: `<img src="http://ddragon.leagueoflegends.com/cdn/6.20.1/img/champion/{{single_game_data.champImg}}.png"></img>
               <div class="champ-name">
                 <span class="stat-title">Champion: </span>
-                {{single_game_data.champion}}
+                {{single_game_data.champion}} {{single_game_data.lane}}
               </div>
-              <div class="game-name">
-                <span class="stat-title">Mode: </span>
-                {{single_game_data.gameMode}}
-              </div>
-              <div class="game-result">
-                <span class="stat-title">Result: </span>
-                {{single_game_data.win}}
-              </div>
-              <div class="damage-dealt">
-                <span class="stat-title">Total Damage Dealt to Champions: </span>
-                {{single_game_data.totalDamageDealtToChampions}}
-              </div>
-              <div class="damage-taken">
-                <span class="stat-title">Total Damage Taken: </span>
-                {{single_game_data.totalDamageTaken}}
-              </div>
-              <div class="wards-placed">
-                <span class="stat-title">Wards Placed: </span>
-                {{single_game_data.wardsPlaced}}
-              </div>
-              <div class="wards-killed">
-                <span class="stat-title">Wards Killed: </span>
-                {{single_game_data.wardsKilled}}
-              </div>
-              <div class="player-role">
-                <span class="stat-title">Player Role: </span>
-                {{single_game_data.totalDamageTaken}}
-              </div>
-              <div class="assists">
-                <span class="stat-title">Assits: </span>
-                {{single_game_data.totalDamageTaken}}
-              </div>
-              <div class="deaths">
-                <span class="stat-title">Deaths: </span>
-                {{single_game_data.deaths}}
-              </div>
-              <div class="largest-multi-kill">
-                <span class="stat-title">Largest Multi Kill: </span>
-                {{single_game_data.largestMultiKill}}
-              </div>
-              <div class="kills">
-                <span class="stat-title">Kills: </span>
-                {{single_game_data.kills}}
-              </div>
-              <div class="largest-killing-spree">
-                <span class="stat-title">Largest Killing Spree: </span>
-                {{single_game_data.largestKillingSpree}}
-              </div>
-              <div class="time-played">
-                <span class="stat-title">Time Played: </span>
-                {{single_game_data.timePlayed}}
-              </div>
-              <div class="ip-earned">
-                <span class="stat-title">IP Earned: </span>: 
-                {{single_game_data.ipEarned}}
+              <div class="row">
+                <div class="col s12 main-title">GAME STATS</div>
+                  <div class="col s6">
+                    <span class="stat-title">Game Type:</span>
+                    {{single_game_data.gameType}}
+                  </div>
+                  <div class="col s6">
+                    <span class="stat-title">Result:</span>
+                    {{single_game_data.win}}
+                  </div>
+                  <div class="col s3">
+                    <span class="stat-title">Kills:</span>
+                    {{single_game_data.kills}}
+                  </div>
+                  <div class="col s3">
+                    <span class="stat-title">Deaths:</span>
+                    {{single_game_data.deaths}}
+                  </div>
+                  <div class="col s3">
+                    <span class="stat-title">Assists:</span>
+                    {{single_game_data.assists}}
+                  </div>
               </div>
 
+              <div class="row">
+                <div class="col s12 main-title">GAME DETAILS</div>
+                <div class="col s12 title">Damage:</div>
+                <div class="col s12">
+                  <span class="stat-title">Total Damage Dealt to Champions:</span>
+                  {{single_game_data.totalDamageDealtToChampions}}
+                </div>
+                <div class="col s12">
+                  <span class="stat-title">Total Damage Taken:</span>
+                  {{single_game_data.totalDamageTaken}}
+                </div>
+                <div class="col s12 title">Ward:</div>
+                <div class="col s12">
+                  <span class="stat-title">Wards Placed:</span>
+                  {{single_game_data.wardsPlaced}}
+                </div>
+                <div class="col s12">
+                  <span class="stat-title">Wards Killed:</span>
+                  {{single_game_data.wardsKilled}}
+                </div>
+                <div class="col s12 title">Kills:</div>
+                <div class="col s12">
+                  <span class="stat-title">Largest Multi Kill:</span>
+                  {{single_game_data.largestMultiKill}}
+                </div>
+                <div class="col s12">
+                  <span class="stat-title">Largest Killing Spree:</span>
+                  {{single_game_data.largestKillingSpree}}
+                </div>
+                <div class="col s12 title">Misc:</div>
+                <div class="col s12">
+                  <span class="stat-title">Time Played:</span>
+                  {{single_game_data.timePlayed}}
+                </div>
+                <div class="col s12">
+                  <span class="stat-title">IP Earned:</span>: 
+                  {{single_game_data.ipEarned}}
+                </div>
+              </div>
               `
   };
 });
