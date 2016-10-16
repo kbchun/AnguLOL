@@ -85,12 +85,12 @@ indexApp.directive('gameSingleInfo', function() {
                 {{single_game_data.totalDamageTaken}}
               </div>
               <div class="wards-placed">
-                <span class="stat-title">Wards Placed: </span>: 
-                {{single_game_data.wardPlaced}}
+                <span class="stat-title">Wards Placed: </span>
+                {{single_game_data.wardsPlaced}}
               </div>
               <div class="wards-killed">
-                <span class="stat-title">Wards Killed: </span>: 
-                {{single_game_data.wardKilled}}
+                <span class="stat-title">Wards Killed: </span>
+                {{single_game_data.wardsKilled}}
               </div>
               <div class="player-role">
                 <span class="stat-title">Player Role: </span>
