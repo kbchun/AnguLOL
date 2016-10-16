@@ -4,16 +4,40 @@
   <meta charset="UTF-8">
   <title>AnguLOL</title>
   <script src="../node_modules/angular/angular.js"></script>
+  <link href="./css/index.css" rel="stylesheet"></link>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+  <script src="./lib/jquery-3.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 </head>
 <body>
   <div id="content" ng-app="index.app">
     <div ng-controller="index.controller">
-      <input type="text" ng-model="search_input">
-      <button ng-click="search()">Search</button>
+      <div class="options row">
+        <input class="name-input " type="text" ng-model="search_input" ng-keyDown="search($event.keyCode)">
+        <button class="waves-effect waves-light btn" ng-click="search()">Search</button>
+      </div>
+      <div class="row">
+        <div class="game-list-container col s5">
+          <h4 ng-show="username_bool">Summoner: {{username}}</h4>
+          <ul>
+            <li ng-click="gameDetail(game)" ng-repeat="game in game_data">
+              <div>Date: {{game.date}}</div>
+              <div>K / D / A</div>
+              <div>{{game.kills}} / {{game.deaths}} / {{game.assists}}</div>
+            </li>
+          </ul>
+        </div>
 
+        <div class="game-single-container col s5" ng-show="game_data_bool">
+          <game-single-info></game-single-info>
+        </div>
+      </div>
 
     </div>
   </div>
+  <script src="./data/champData.js"></script>
+  <script src="./data/itemData.js"></script>
+  <script src="./data/runeData.js"></script>
   <script src="./config/config.js"></script>
   <script src="./index.js"></script>
   <script src="./controllers/index_controller.js"></script>

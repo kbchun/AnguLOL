@@ -1,0 +1,16 @@
+.game-list-container ul {
+  list-style: none;
+}
+
+.game-list-container ul li {
+  margin: 10px;
+}
+
+.options .name-input {
+  margin:10px;
+  width:20%;
+}
+
+.stat-title {
+  font-weight: bold;
+}
